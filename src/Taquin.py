@@ -63,9 +63,8 @@ class Taquin:
         if self.empty[1] + move_vect[1] < 0 or self.empty[1] + move_vect[1] >= self.size:
             return False
         new_empty_coord = self.empty[0] + move_vect[0], self.empty[1] + move_vect[1]
-        tmp = self.grid[new_empty_coord[0]][new_empty_coord[1]]
-        self.grid[new_empty_coord[0]][new_empty_coord[1]] = 0
-        self.grid[self.empty[0]][self.empty[1]] = tmp
+        self.grid[new_empty_coord[0]][new_empty_coord[1]], self.grid[self.empty[0]][self.empty[1]] =\
+            0, self.grid[new_empty_coord[0]][new_empty_coord[1]]
         self.empty = new_empty_coord
         return True
 
