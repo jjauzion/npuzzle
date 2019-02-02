@@ -1,4 +1,5 @@
 from src import Taquin
 
-taq = Taquin.Taquin(size=3, file=10)
+taq = Taquin.Taquin(9)
+taq.generate_random(4)
 print(taq)
