@@ -35,27 +35,22 @@ class Taquin:
         self.empty = self.get_empty_coord()
 
     def get_moved_taquin(self, move):
-        ok_move = ["top", "bottom", "left", "right"]
-        if move not in ok_move:
-            raise ValueError("Move shall be either {}. Got {}".format(ok_move, move))
-        move_vect = [0, 0]
-        move_vect[0] = -1 if move == "top" else 1 if move == "bottom" else 0
-        move_vect[1] = -1 if move == "left" else 1 if move == "right" else 0
-        if self.empty[0] + move_vect[0] < 0 or self.empty[0] + move_vect[0] >= self.size:
+        """
+        Return a copy of the Taquin after the required move. Self.grid is unchanged by this method.
+        :param move: Desired move. Choices : "top", "bottom", "left", "right"
+        :return: new Taquin object
+        """
+        new_taquin = Taquin(np.copy(self.grid))
+        if new_taquin.move_in_place(move):
+            return new_taquin
+        else:
             return None
-        if self.empty[1] + move_vect[1] < 0 or self.empty[1] + move_vect[1] >= self.size:
-            return None
-        new_empty_coord = self.empty[0] + move_vect[0], self.empty[1] + move_vect[1]
-        tmp = self.grid[new_empty_coord[0]][new_empty_coord[1]]
-        self.grid[new_empty_coord[0]][new_empty_coord[1]] = 0
-        self.grid[self.empty[0]][self.empty[1]] = tmp
-        self.empty = new_empty_coord
 
     def move_in_place(self, move):
         """
         Apply the required move (top, bottom, left, right) to the taquin and changed its grid
         :param move: Desired move. Choices : "top", "bottom", "left", "right"
-        :return:
+        :return: True if the move is possible ; False otherwise
         """
         ok_move = ["top", "bottom", "left", "right"]
         if move not in ok_move:
@@ -64,14 +59,15 @@ class Taquin:
         move_vect[0] = -1 if move == "top" else 1 if move == "bottom" else 0
         move_vect[1] = -1 if move == "left" else 1 if move == "right" else 0
         if self.empty[0] + move_vect[0] < 0 or self.empty[0] + move_vect[0] >= self.size:
-            return None
+            return False
         if self.empty[1] + move_vect[1] < 0 or self.empty[1] + move_vect[1] >= self.size:
-            return None
+            return False
         new_empty_coord = self.empty[0] + move_vect[0], self.empty[1] + move_vect[1]
         tmp = self.grid[new_empty_coord[0]][new_empty_coord[1]]
         self.grid[new_empty_coord[0]][new_empty_coord[1]] = 0
         self.grid[self.empty[0]][self.empty[1]] = tmp
         self.empty = new_empty_coord
+        return True
 
     def get_solution(self):
         solution = np.zeros((self.size, self.size))

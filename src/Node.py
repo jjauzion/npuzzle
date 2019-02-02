@@ -22,8 +22,11 @@ class Node:
             iterator.iternext()
         return distance
 
-"""
     def get_neighbors(self):
-        neighbors = node
-        return
-"""
+        moves = ["top", "bottom", "left", "right"]
+        neighbors = []
+        for move in moves:
+            tmp = self.taquin.get_moved_taquin(move)
+            if tmp:
+                neighbors.append(tmp)
+        return neighbors
