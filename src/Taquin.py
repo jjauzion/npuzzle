@@ -77,7 +77,7 @@ class Taquin:
         return True
 
     def get_solution(self):
-        solution = np.zeros((self.size, self.size))
+        solution = np.zeros((self.size, self.size), dtype=np.uint16)
         sol_dict = {}
         y = 0
         ymin = 0

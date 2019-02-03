@@ -1,7 +1,10 @@
 import numpy as np
 
+from . import NodeList
 
 class Node:
+
+    nb_of_node = 0
 
     def __init__(self, taquin, parent=None, end_node=None):
         """
@@ -15,9 +18,12 @@ class Node:
         self.cost = 0 if not parent else parent.cost + 1
         self.distance = self.get_manhanttan_distance(end_node) if end_node else 0
         self.heuristic = self.cost + self.distance
+        Node.nb_of_node += 1
+        self.id = Node.nb_of_node
+        self.end_node = end_node
 
     def __repr__(self):
-        ret = "Node:\n"
+        ret = "Node {}:\n".format(self.id)
         ret += str(self.taquin)
         ret += "\ndistance: {} ; cost: {} ; heuristic: {} ; parent: {}".format(
             self.distance, self.cost, self.heuristic, bool(self.parent))
@@ -55,13 +61,17 @@ class Node:
             iterator.iternext()
         return distance
 
-    def get_neighbors(self):
+    def get_neighbor_node(self):
+        """
+        Return a list of all neighbors' node. A neighbor is a taquin achievable within 1 move from the current taquin.
+        :return: list of neighbors Node object
+        """
         moves = ["top", "bottom", "left", "right"]
-        neighbors = []
+        neighbors = NodeList.NodeList()
         for move in moves:
             tmp = self.taquin.get_moved_taquin(move)
             if tmp:
-                neighbors.append(tmp)
+                neighbors.append(Node(tmp, parent=self, end_node=self.end_node))
         return neighbors
 
     def get_hamming_distance(self, target=None):
