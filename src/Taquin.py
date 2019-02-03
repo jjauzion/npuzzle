@@ -3,12 +3,20 @@ import numpy as np
 
 class Taquin:
 
-    def __init__(self, grid=np.arange(4).reshape((2, 2))):
-        if type(grid) != np.ndarray:
-            raise AttributeError("np.ndarray expected for grid argument. Got {} object instead".format(type(grid)))
-        self.grid = grid
-        self.size = grid.shape[0]
-        self.empty = self.get_empty_coord()
+    def __init__(self, grid="random", size=3):
+        """
+        Build a Taquin either randomly or from an existing grid.
+        :param grid: Can be set to "random" (default) or can be a numpy.ndarray
+        :param size: if grid == "random", size defines the grid size
+        """
+        if type(grid) == np.ndarray:
+            self.grid = grid
+            self.size = grid.shape[0]
+            self.empty = self.get_empty_coord()
+        elif grid == "random":
+            self.generate_random(size)
+        else:
+            raise AttributeError("grid shall either be a np.ndarray or 'random'. Got {} object instead".format(type(grid)))
 
     def __repr__(self):
         return str(self.grid)

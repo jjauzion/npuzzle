@@ -3,14 +3,47 @@ import numpy as np
 
 class Node:
 
-    def __init__(self, taquin, parent):
+    def __init__(self, taquin, parent=None, end_node=None):
+        """
+        Create a new node in the graph
+        :param taquin: Numpy array of the taquin state at this node
+        :param parent: Node object
+        :param end_node: tacquin to reach, in the form of a dictionary
+        """
         self.taquin = taquin
         self.parent = parent
-        self.cost = 0
-        self.distance = 0
+        self.cost = 0 if not parent else parent.cost + 1
+        self.distance = self.get_manhanttan_distance(end_node) if end_node else 0
         self.heuristic = self.cost + self.distance
 
+    def __repr__(self):
+        ret = "Node:\n"
+        ret += str(self.taquin)
+        ret += "\ndistance: {} ; cost: {} ; heuristic: {} ; parent: {}".format(
+            self.distance, self.cost, self.heuristic, bool(self.parent))
+        return ret
+
+    def __eq__(self, other):
+        return self.heuristic == other.heuristic
+
+    def __lt__(self, other):
+        return self.heuristic < other.heuristic
+
+    def __gt__(self, other):
+        return self.heuristic > other.heuristic
+
+    def __ge__(self, other):
+        return self.heuristic >= other.heuristic
+
+    def __le__(self, other):
+        return self.heuristic <= other.heuristic
+
     def get_manhanttan_distance(self, target=None):
+        """
+        Compute the manhattan distance from the current node to the target node
+        :param target: target node in the from of a dictionary
+        :return:
+        """
         if not target:
             _, target = self.taquin.get_solution()
         distance = 0
