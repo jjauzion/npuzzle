@@ -1,7 +1,7 @@
 import heapq
 
 from . import NodeList
-from . import Node
+from . import _old_Node
 
 class PathFinder:
 

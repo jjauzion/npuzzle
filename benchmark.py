@@ -59,8 +59,28 @@ def bench_list_creation(nb_iter):
         lst = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 
+def bench_search_in_list(nb_iter, lst):
+    for i in range(nb_iter):
+        if 5 in lst:
+            test = True
+
+
+def bench_search_in_dico(nb_iter, dico):
+    for i in range(nb_iter):
+        if "e" in dico:
+            test = True
+
+
 if __name__ == '__main__':
     from timeit import Timer
+
+    dico = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+    lst = [1, 2, 3, 4, 5]
+    t = Timer(lambda: bench_search_in_dico(10000, dico))
+    print("search in dico exe time : {}".format(t.timeit(number=100)))
+    t = Timer(lambda: bench_search_in_list(10000, lst))
+    print("search in list exe time : {}".format(t.timeit(number=100)))
+
     t = Timer(lambda: bench_list_creation(10000))
     print("list creation exe time : {}".format(t.timeit(number=100)))
     t = Timer(lambda: bench_nparray_creation(10000))
