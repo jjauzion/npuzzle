@@ -116,7 +116,27 @@ class Node:
                 if target[int(iterator[0])][0] == int(iterator.multi_index[0]):
                     heuristic += 2
                 elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
-                    heuristic += 1
+                    heuristic += 2
             iterator.iternext()
         return heuristic
 
+
+    # public function get_Linear_conflict()
+    # {
+    #     $cur = $this->map;
+    #     $heuristic = 0;
+    #     foreach ($cur as $currentPos => $val) {
+    #         $wantedPos = $this->getXY($val, $this->goal);
+
+    #         $wantedX = $wantedPos['x'];
+    #         $wantedY = $wantedPos['y'];
+
+    #         $currentPos = $this->getXY($val, $this->map);
+    #         $currentX = $currentPos['x'];
+    #         $currentY = $currentPos['y'];
+    #         if ($wantedX != $currentX || $wantedY != $currentY)
+    #             $heuristic += 2;
+    #     }
+    #     $this->heuristic = intval($heuristic);
+    #     return intval($heuristic);
+    # }

@@ -1,5 +1,6 @@
 import heapq
 import numpy as np
+import fileinput
 
 from src import Taquin
 from src import Node
@@ -36,7 +37,8 @@ n2 = Node.Node(Taquin.Taquin(grid="random", size=3), end_node=solution_dict, par
 print(n2)
 print("n1 >= n2 ? {}".format(n1 >= n2))
 """
-
+"""
+TEST
 init_taquin = Taquin.Taquin(grid=np.array([[8, 3, 4], [2, 1, 5], [7, 6, 0]]))
 init_taquin = Taquin.Taquin(grid=np.array([[1, 7, 2], [4, 0, 5], [8, 3, 6]]))
 init_taquin = Taquin.Taquin(grid=np.array([[2, 4, 0], [3, 8, 1], [7, 6, 5]]))
@@ -49,3 +51,8 @@ print(solution_node)
 print(solution_dic)
 algo = PathFinder.PathFinder(start_node=start_node)
 algo.a_star()
+"""
+
+for line in fileinput.input():
+    print(line)
+    pass

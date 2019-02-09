@@ -1,5 +1,5 @@
-Prevoir:
 
+Prevoir:
 Ensemble ouvert
 Les étudiants ont mis en œuvre leur ensemble "ouvert" avec une structure de données pertinente.
 - Une file d'attente prioritaire (c'est-à-dire une file d'attente contenant d'abord les éléments à haute priorité, ici "priorité élevée" signifie "à faible coût"), ou un autre conteneur permettant de récupérer immédiatement l'élément le moins coûteux, vaut 5
@@ -9,12 +9,15 @@ Les étudiants ont mis en œuvre leur ensemble "ouvert" avec une structure de do
 
 Ensemble fermé
 Les étudiants ont mis en œuvre leur ensemble "fermé" avec une structure de données appropriée.
-- Un conteneur qui permet facilement de vérifier si un nœud est actuellement dans l'ensemble ou non vaut 5
+- Un conteneur qui permet facilement de vérifier si un nœud est actuellement dans l'ensemble ou non vaut 5 (table de hash, on met le truc dans la clef direct)
 - Tout autre conteneur, tel que liste / vecteur / etc ... vaut 0
 
 Recherche gourmande
--Les étudiants ont implémenté une option permettant de faire une recherche gourmande et sont capables de l'expliquer.
--Les étudiants ont implémenté une option permettant de faire une recherche à coût uniforme et sont en mesure de l'expliquer.
+-Les étudiants ont implémenté une option permettant de faire une recherche gourmande et sont capables de l'expliquer. (truc qui pars en cercle pour avoir tout les resultats) disjka
+-Les étudiants ont implémenté une option permettant de faire une recherche à coût uniforme et sont en mesure de l'expliquer. (trucs qui pars direct au resultat) best first search
+
+https://qiao.github.io/PathFinding.js/visual/
+
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -74,8 +77,9 @@ Construisez le chemin à partir de noeud pour commencer à utiliser noeud . pare
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 https://conda.io/en/latest/miniconda.html
+export PATH="/Users/jaustry/sgoinfre/miniconda3/bin:$PATH"
+source ~/.zshrc
 conda
 conda env
 conda create --name npuzzle python=3.7
