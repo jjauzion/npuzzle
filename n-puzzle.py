@@ -37,6 +37,7 @@ n2 = Node.Node(Taquin.Taquin(grid="random", size=3), end_node=solution_dict, par
 print(n2)
 print("n1 >= n2 ? {}".format(n1 >= n2))
 """
+
 """
 TEST
 init_taquin = Taquin.Taquin(grid=np.array([[8, 3, 4], [2, 1, 5], [7, 6, 0]]))
@@ -53,6 +54,18 @@ algo = PathFinder.PathFinder(start_node=start_node)
 algo.a_star()
 """
 
+init_taquin = ()
+size = 0
 for line in fileinput.input():
-    print(line)
-    pass
+	line2 = line.split('#')
+	print(line2, end='')
+	line2[0] = line2[0].strip()
+	if (line[0].isdigit() and size == 0):
+		size = line2[0]
+		print("taille taquin : "+ size)
+	print("==>", end='')
+	print(line2)
+	pass
+
+
+
