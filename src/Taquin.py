@@ -76,7 +76,24 @@ class Taquin:
         self.empty = new_empty_coord
         return True
 
+    def to_dictionary(self):
+        """
+        Return the tacquin as a dictionary
+        :return:
+        """
+        dictionary = {}
+        iterator = np.nditer(self.grid, flags=['multi_index'])
+        while not iterator.finished:
+            dictionary[int(iterator[0])] = (iterator.multi_index[0], iterator.multi_index[1])
+            iterator.iternext()
+        return dictionary
+
+
     def get_solution(self):
+        """
+        Retturn the solution to the current taquin both as a Taquin object and as a dictionary
+        :return: solution_as_a_taquin, solution_as_a_dictionary
+        """
         solution = np.zeros((self.size, self.size), dtype=np.uint16)
         sol_dict = {}
         y = 0

@@ -10,23 +10,29 @@ class PathFinder:
         self.open_list = None
         self.closed_list = None
         self.current_node = None
+        self.time_complexity = 0
+        self.size_complexity = 0
 
-    def _print_iter(self, cpt):
+    def _print_iter(self):
         print("----------------------------------")
-        print("cpt = {}".format(cpt))
+        print("time complexity = {}".format(self.time_complexity))
+        print("size complexity = {}".format(self.size_complexity))
         print("opened : [{}]".format(self.open_list))
         print("closed : [{}]".format(self.closed_list))
         print("self.current_node :\n{}".format(self.current_node))
+        input("press any key to continue")
 
     def a_star(self, verbose=False, heuristic="Manhattan"):
         self.open_list = NodeList.NodeList([self.start_node])
         self.closed_list = NodeList.NodeList()
-        cpt = 0
+        self.time_complexity = 0
         self.current_node = heapq.heappop(self.open_list)
-        while self.current_node.distance > 0 and cpt < 5000:
-            cpt += 1
+        while self.current_node.distance > 0 and self.time_complexity < 5000:
+            self.time_complexity += 1
+            if len(self.open_list) > self.size_complexity:
+                self.size_complexity = len(self.open_list)
             if verbose:
-                self._print_iter(cpt)
+                self._print_iter()
             neighbors = NodeList.NodeList([neighbor for neighbor in self.current_node.get_neighbor_node() if neighbor not in self.closed_list])
             heapq.heapify(neighbors)
             self.open_list = NodeList.NodeList(heapq.merge(self.open_list, neighbors))
@@ -42,7 +48,9 @@ class PathFinder:
         print("\n----------------------------\nPlay:")
         for node in solution:
             print(node)
-        print("Solved in {} moves and {} iterations".format(nb_move, cpt))
+        print("Solved in {} moves".format(nb_move))
+        print("Time complexity = {}".format(self.time_complexity))
+        print("Size complexity = {}".format(self.size_complexity))
 
     def rewind_play(self, last_node):
         play = NodeList.NodeList([last_node])

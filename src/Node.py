@@ -6,21 +6,24 @@ class Node:
 
     nb_of_node = 0
 
-    def __init__(self, taquin, parent=None, end_node=None):
+    def __init__(self, taquin, parent=None, target_taquin=None):
         """
         Create a new node in the graph
         :param taquin: Numpy array of the taquin state at this node
         :param parent: Node object
-        :param end_node: tacquin to reach, in the form of a dictionary
+        :param target_taquin: tacquin to reach, in the form of a dictionary
         """
         self.taquin = taquin
         self.parent = parent
+        if isinstance(target_taquin, dict):
+            self.end_node = target_taquin
+        else:
+            raise TypeError("Target taquin shall be given as a dictionary. Got {}.".format(type(target_taquin)))
         self.cost = 0 if not parent else parent.cost + 1
-        self.distance = self.get_manhanttan_distance(end_node) if end_node else 0
+        self.distance = self.get_manhanttan_distance(target_taquin) if target_taquin else 0
         self.heuristic = self.cost + self.distance
         Node.nb_of_node += 1
         self.id = Node.nb_of_node
-        self.end_node = end_node
 
     def __repr__(self):
         ret = "Node {}:\n".format(self.id)
@@ -71,5 +74,5 @@ class Node:
         for move in moves:
             tmp = self.taquin.get_moved_taquin(move)
             if tmp:
-                neighbors.append(Node(tmp, parent=self, end_node=self.end_node))
+                neighbors.append(Node(tmp, parent=self, target_taquin=self.end_node))
         return neighbors
