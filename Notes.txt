@@ -70,3 +70,17 @@ chemin de la fonction ( noeud )
 {
 Construisez le chemin à partir de noeud pour commencer à utiliser noeud . parent;
 } 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+https://conda.io/en/latest/miniconda.html
+conda
+conda env
+conda create --name npuzzle python=3.7
+source activate npuzzle
+conda install numpy
+
+
+source activate npuzzle
