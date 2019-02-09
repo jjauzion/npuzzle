@@ -1,6 +1,8 @@
 import numpy as np
 
 from . import NodeList
+from . import config
+from . import puzzle_lib as pl
 
 class Node:
 
@@ -27,7 +29,7 @@ class Node:
 
     def __repr__(self):
         ret = "Node {}:\n".format(self.id)
-        ret += str(self.taquin)
+        ret += str(self.taquin.grid)
         ret += "\ndistance: {} ; cost: {} ; heuristic: {} ; parent: {}".format(
             self.distance, self.cost, self.heuristic, bool(self.parent))
         return ret
@@ -47,14 +49,24 @@ class Node:
     def __le__(self, other):
         return self.heuristic <= other.heuristic
 
-    def get_manhanttan_distance(self, target=None):
+    def get_neighbor_node(self):
+        """
+        Return a list of all neighbors' node. A neighbor is a taquin achievable within 1 move from the current taquin.
+        :return: list of neighbors Node object
+        """
+        neighbors = NodeList.NodeList()
+        for move in config.MOVE_LIST:
+            tmp = pl.get_moved_taquin(self.taquin, move)
+            if tmp:
+                neighbors.append(Node(tmp, parent=self, target_taquin=self.end_node))
+        return neighbors
+
+    def get_manhanttan_distance(self, target):
         """
         Compute the manhattan distance from the current node to the target node
         :param target: target node in the from of a dictionary
         :return:
         """
-        if not target:
-            _, target = self.taquin.get_solution()
         distance = 0
         iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
         while not iterator.finished:
@@ -64,22 +76,7 @@ class Node:
             iterator.iternext()
         return distance
 
-    def get_neighbor_node(self):
-        """
-        Return a list of all neighbors' node. A neighbor is a taquin achievable within 1 move from the current taquin.
-        :return: list of neighbors Node object
-        """
-        moves = ["top", "bottom", "left", "right"]
-        neighbors = NodeList.NodeList()
-        for move in moves:
-            tmp = self.taquin.get_moved_taquin(move)
-            if tmp:
-                neighbors.append(Node(tmp, parent=self, target_taquin=self.end_node))
-        return neighbors
-
-    def get_hamming_distance(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
+    def get_hamming_distance(self, target):
         heuristic = 0
         iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
         while not iterator.finished:
@@ -91,9 +88,7 @@ class Node:
             iterator.iternext()
         return heuristic
 
-    def get_euclidian_distance(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
+    def get_euclidian_distance(self, target):
         heuristic = 0
         iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
         while not iterator.finished:
@@ -105,9 +100,7 @@ class Node:
             iterator.iternext()
         return heuristic
 
-    def get_linear_conflict(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
+    def get_linear_conflict(self, target):
         heuristic = self.get_manhanttan_distance(target=target)
         print (heuristic)
         iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
