@@ -1,7 +1,7 @@
 import heapq
 
-from . import NodeList
 from . import Node
+
 
 class PathFinder:
 
@@ -23,22 +23,23 @@ class PathFinder:
         input("press any key to continue")
 
     def a_star(self, verbose=False, heuristic="Manhattan"):
-        self.open_list = NodeList.NodeList([self.start_node])
-        self.closed_list = NodeList.NodeList()
+        self.open_list = []
+        self.closed_list = {}
         self.time_complexity = 0
-        self.current_node = heapq.heappop(self.open_list)
+        self.current_node = self.start_node
         while self.current_node.distance > 0 and self.time_complexity < 5000:
             self.time_complexity += 1
             if len(self.open_list) > self.size_complexity:
                 self.size_complexity = len(self.open_list)
             if verbose:
                 self._print_iter()
-            neighbors = NodeList.NodeList([neighbor for neighbor in self.current_node.get_neighbor_node() if neighbor not in self.closed_list])
+            neighbors = [neighbor for neighbor in Node.Node.get_neighbor_to(self.current_node) if neighbor.id not in self.closed_list]
             heapq.heapify(neighbors)
-            self.open_list = NodeList.NodeList(heapq.merge(self.open_list, neighbors))
-            self.closed_list.append(self.current_node)
+            self.open_list = list(heapq.merge(self.open_list, neighbors))
+            self.closed_list[self.current_node.id] = self.current_node
             self.current_node = heapq.heappop(self.open_list)
         print("End!")
+        self.closed_list[self.current_node.id] = self.current_node
         if self.current_node.distance > 0:
             print("No solution found")
             return
@@ -53,10 +54,10 @@ class PathFinder:
         print("Size complexity = {}".format(self.size_complexity))
 
     def rewind_play(self, last_node):
-        play = NodeList.NodeList([last_node])
+        play = [last_node]
         nb_move = 0
-        while last_node.parent:
+        while last_node.parent_id:
             nb_move += 1
-            last_node = last_node.parent
+            last_node = self.closed_list[last_node.parent_id]
             play.append(last_node)
         return nb_move, play
