@@ -1,11 +1,16 @@
 import heapq
 
 from . import Node
+from . import config
 
 
 class PathFinder:
 
     def __init__(self, start_node):
+        if config.TAQUIN_SIZE ** 2 != len(start_node.grid):
+            print("CONFIG ERROR : Taquin size from config file (={}) mismatch with start node grid size (=sqrt({}))"
+                  .format(config.TAQUIN_SIZE, len(start_node.grid)))
+            exit(1)
         self.start_node = start_node
         self.open_list = None
         self.closed_list = None
@@ -27,7 +32,7 @@ class PathFinder:
         self.closed_list = {}
         self.time_complexity = 0
         self.current_node = self.start_node
-        while self.current_node.distance > 0 and self.time_complexity < 5000:
+        while self.current_node.distance > 0 and self.time_complexity < 15000:
             self.time_complexity += 1
             if len(self.open_list) > self.size_complexity:
                 self.size_complexity = len(self.open_list)

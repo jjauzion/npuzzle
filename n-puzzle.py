@@ -2,9 +2,7 @@ import heapq
 import numpy as np
 import fileinput
 
-from src import Taquin
 from src import Node
-from src import NodeList
 from src import PathFinder
 
 """
@@ -37,6 +35,7 @@ for node in neighbor:
 
 
 def run():
+    start_node = Node.Node.generate_random_node()
     start_node = Node.Node(grid=[8, 3, 4, 2, 1, 5, 7, 6, 0])
     start_node = Node.Node(grid=[2, 4, 0, 3, 8, 1, 7, 6, 5])
     start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6])
