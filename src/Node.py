@@ -126,6 +126,21 @@ class Node:
                 self.distance += abs(self.target[value][0] - x)
                 self.distance += abs(self.target[value][1] - y)
 
+    def __eq__(self, other):
+        return self.heuristic == other.heuristic
+
+    def __lt__(self, other):
+        return self.heuristic < other.heuristic
+
+    def __gt__(self, other):
+        return self.heuristic > other.heuristic
+
+    def __ge__(self, other):
+        return self.heuristic >= other.heuristic
+
+    def __le__(self, other):
+        return self.heuristic <= other.heuristic
+
     def set_heuristic(self):
         self.set_manhanttan_distance()
         self.heuristic = self.cost + self.distance
