@@ -52,3 +52,4 @@ def run():
 if __name__ == '__main__':
     from timeit import Timer
     t = Timer(lambda: run())
+    print("exe time : {}".format(t.timeit(number=1)))

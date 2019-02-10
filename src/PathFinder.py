@@ -36,9 +36,10 @@ class PathFinder:
             neighbors = [neighbor for neighbor in Node.Node.get_neighbor_to(self.current_node) if neighbor.id not in self.closed_list]
             heapq.heapify(neighbors)
             self.open_list = list(heapq.merge(self.open_list, neighbors))
-            self.closed_list[self.current_node.id] = 1
+            self.closed_list[self.current_node.id] = self.current_node
             self.current_node = heapq.heappop(self.open_list)
         print("End!")
+        self.closed_list[self.current_node.id] = self.current_node
         if self.current_node.distance > 0:
             print("No solution found")
             return
@@ -53,10 +54,10 @@ class PathFinder:
         print("Size complexity = {}".format(self.size_complexity))
 
     def rewind_play(self, last_node):
-        play = [last_node.id]
+        play = [last_node]
         nb_move = 0
         while last_node.parent_id:
             nb_move += 1
-            last_node = last_node.parent_id
+            last_node = self.closed_list[last_node.parent_id]
             play.append(last_node)
         return nb_move, play
