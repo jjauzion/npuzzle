@@ -32,10 +32,10 @@ class Node:
         move_index = -size if move == config.MOVE_TOP else size if move == config.MOVE_BOTTOM else 0
         move_index += -1 if move == config.MOVE_LEFT else 1 if move == config.MOVE_RIGHT else 0
         new_empty_index = node.empty + move_index
-        new_node = Node(grid=copy.copy(node.grid), parent_id=node.id, parent_cost=node.cost,
-                        target_grid=node.target, empty_index=new_empty_index)
-        new_node.grid[new_empty_index], new_node.grid[node.empty] = 0, new_node.grid[new_empty_index]
-        return new_node
+        new_grid = copy.copy(node.grid)
+        new_grid[new_empty_index], new_grid[node.empty] = 0, new_grid[new_empty_index]
+        return Node(grid=new_grid, parent_id=node.id, parent_cost=node.cost,
+                    target_grid=node.target, empty_index=new_empty_index)
 
     @staticmethod
     def get_neighbor_to(node):
@@ -119,10 +119,12 @@ class Node:
         """
         Set the manhattan distance of the current node to the target grid
         """
+        self.distance = 0
         for index, value in enumerate(self.grid):
-            x, y = self.index_to_xy(index)
-            self.distance += abs(self.target[value][0] - x)
-            self.distance += abs(self.target[value][1] - y)
+            if value != 0:
+                x, y = self.index_to_xy(index)
+                self.distance += abs(self.target[value][0] - x)
+                self.distance += abs(self.target[value][1] - y)
 
     def set_heuristic(self):
         self.set_manhanttan_distance()
