@@ -150,3 +150,49 @@ class Node:
             raise TypeError("Target grid shall be given as a dictionary")
         self.target = target
         self.set_heuristic()
+
+"""
+    def get_hamming_distance(self, target=None):
+        if not target:
+            _, target = self.taquin.get_solution()
+        heuristic = 0
+        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
+        while not iterator.finished:
+            if iterator[0] != 0:
+                if target[int(iterator[0])][0] != int(iterator.multi_index[0]):
+                    heuristic += 1
+                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
+                    heuristic += 1
+            iterator.iternext()
+        return heuristic
+
+    def get_euclidian_distance(self, target=None):
+        if not target:
+            _, target = self.taquin.get_solution()
+        heuristic = 0
+        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
+        while not iterator.finished:
+            if iterator[0] != 0:
+                if target[int(iterator[0])][0] != int(iterator.multi_index[0]):
+                    heuristic += 1
+                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
+                    heuristic += 1
+            iterator.iternext()
+        return heuristic
+
+    def get_linear_conflict(self, target=None):
+        if not target:
+            _, target = self.taquin.get_solution()
+        heuristic = self.get_manhanttan_distance(target=target)
+        print (heuristic)
+        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
+        while not iterator.finished:
+            if iterator[0] != 0:
+                if target[int(iterator[0])][0] == int(iterator.multi_index[0]):
+                    heuristic += 2
+                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
+                    heuristic += 1
+            iterator.iternext()
+        return heuristic
+"""
+
