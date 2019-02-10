@@ -1,4 +1,5 @@
 import copy
+import random
 
 from . import config
 
@@ -21,18 +22,19 @@ class Node:
         :param move: required move (see config file for list of moves)
         :return: new Node object, child of the Node given in input ; None if the move is not possible
         """
-        move_vect = [0, 0]
-        move_vect[0] = -1 if move == config.MOVE_TOP else 1 if move == config.MOVE_BOTTOM else 0
-        move_vect[1] = -1 if move == config.MOVE_LEFT else 1 if move == config.MOVE_RIGHT else 0
-        if node.empty[0] + move_vect[0] < 0 or node.empty[0] + move_vect[0] >= config.TAQUIN_SIZE:
+        size = config.TAQUIN_SIZE
+        if (move == config.MOVE_LEFT and node.empty % size == 0) or \
+                (move == config.MOVE_RIGHT and node.empty % size == size - 1):
             return None
-        if node.empty[1] + move_vect[1] < 0 or node.empty[1] + move_vect[1] >= config.TAQUIN_SIZE:
+        if (move == config.MOVE_TOP and node.empty // size == 0) or \
+                (move == config.MOVE_BOTTOM and node.empty // size == size - 1):
             return None
-        new_node = Node(grid=copy.copy(node.grid), parent_id=node.id, parent_cost=node.cost, target_grid=node.target)
-        new_empty_coord = node.empty[0] + move_vect[0], node.empty[1] + move_vect[1]
-        new_node.grid[new_empty_coord[0]][new_empty_coord[1]], new_node.grid[node.empty[0]][node.empty[1]] = \
-            0, new_node.grid[new_empty_coord[0]][new_empty_coord[1]]
-        new_node.empty = new_empty_coord
+        move_index = -size if move == config.MOVE_TOP else size if move == config.MOVE_BOTTOM else 0
+        move_index += -1 if move == config.MOVE_LEFT else 1 if move == config.MOVE_RIGHT else 0
+        new_empty_index = node.empty + move_index
+        new_node = Node(grid=copy.copy(node.grid), parent_id=node.id, parent_cost=node.cost,
+                        target_grid=node.target, empty_index=new_empty_index)
+        new_node.grid[new_empty_index], new_node.grid[node.empty] = 0, new_node.grid[new_empty_index]
         return new_node
 
     @staticmethod
@@ -49,14 +51,58 @@ class Node:
                 neighbor.append(tmp)
         return neighbor
 
-    def __init__(self, grid, parent_id=None, parent_cost=0, target_grid=None):
+    @staticmethod
+    def generate_random_node():
+        return Node(grid=random.sample(range(config.TAQUIN_SIZE ** 2), config.TAQUIN_SIZE ** 2))
+
+    @staticmethod
+    def get_solution():
+        """
+        Retturn the solution of a taquin with size = config.TAQUIN_SIZE
+        :return: solution_as_a_dictionary
+        """
+        solution = {}
+        y = 0
+        ymin = 0
+        ymax = config.TAQUIN_SIZE - 1
+        x= 0
+        xmin = 0
+        xmax = config.TAQUIN_SIZE - 1
+        cpt = 1
+        dir = 1
+        for i in range(config.TAQUIN_SIZE ** 2):
+            solution[cpt] = (x, y)
+            cpt = cpt + 1 if cpt < config.TAQUIN_SIZE ** 2 - 1 else 0
+            if x == xmin and y < ymax:
+                if dir == 4:
+                    ymin += 1
+                    dir = 1
+                y += 1
+            elif y == ymax and x < xmax:
+                if dir == 1:
+                    xmin += 1
+                    dir = 2
+                x += 1
+            elif x == xmax and y > ymin:
+                if dir == 2:
+                    ymax -= 1
+                    dir = 3
+                y -= 1
+            elif y == ymin and x > xmin:
+                if dir == 3:
+                    dir = 4
+                    xmax -= 1
+                x -= 1
+        return solution
+
+    def __init__(self, grid, parent_id=None, parent_cost=0, target_grid=None, empty_index=None):
         self.grid = grid
         self.parent_id = parent_id
         self.cost = parent_cost + 1 if parent_id else 0
         self.distance = 0
         self.heuristic = 0
         self.id = "".join(str(elm) for elm in self.grid)
-        self.empty = self.grid.index(0)
+        self.empty = self.grid.index(0) if not empty_index else empty_index
         if target_grid:
             if not isinstance(target_grid, dict):
                 raise TypeError("Target grid shall be given as a dictionary")
@@ -64,6 +110,10 @@ class Node:
             self.set_heuristic()
         else:
             self.target = None
+
+    def __repr__(self):
+        return "{} ; h={} ; c={} ; d={} ; parent={} ; empty={}".format(
+            self.grid, self.heuristic, self.cost, self.distance, self.parent_id, self.empty)
 
     def set_manhanttan_distance(self):
         """
@@ -77,3 +127,9 @@ class Node:
     def set_heuristic(self):
         self.set_manhanttan_distance()
         self.heuristic = self.cost + self.distance
+
+    def set_target_grid(self, target):
+        if not isinstance(target, dict):
+            raise TypeError("Target grid shall be given as a dictionary")
+        self.target = target
+        self.set_heuristic()
