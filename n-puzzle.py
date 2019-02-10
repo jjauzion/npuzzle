@@ -34,14 +34,21 @@ for node in neighbor:
     print(node)
 """
 
-start_node = Node.Node(grid=[8, 3, 4, 2, 1, 5, 7, 6, 0])
-start_node = Node.Node(grid=[2, 4, 0, 3, 8, 1, 7, 6, 5])
-start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6])
-solution = Node.Node.get_solution()
-start_node.set_target_grid(solution)
-print("Start node :")
-print(start_node)
-print("Solution :")
-print(solution)
-algo = PathFinder.PathFinder(start_node=start_node)
-algo.a_star()
+
+def run():
+    start_node = Node.Node(grid=[8, 3, 4, 2, 1, 5, 7, 6, 0])
+    start_node = Node.Node(grid=[2, 4, 0, 3, 8, 1, 7, 6, 5])
+    start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6])
+    solution = Node.Node.get_solution()
+    start_node.set_target_grid(solution)
+    print("Start node :")
+    print(start_node)
+    print("Solution :")
+    print(solution)
+    algo = PathFinder.PathFinder(start_node=start_node)
+    algo.a_star()
+
+
+if __name__ == '__main__':
+    from timeit import Timer
+    t = Timer(lambda: run())
