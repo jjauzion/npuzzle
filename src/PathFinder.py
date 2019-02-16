@@ -27,24 +27,41 @@ class PathFinder:
         print("self.current_node :\n{}".format(self.current_node))
         input("press any key to continue")
 
+    def _get_twin(self, node):
+        if node.id in self.closed_list:
+            return self.closed_list[node.id], True
+        else:
+            for node_open in self.open_list:
+                if node.id == node_open.id:
+                    return node_open, False
+        return None, False
+
+    def _update_compexity(self, verbose=False):
+        self.time_complexity += 1
+        if len(self.open_list) > self.size_complexity:
+            self.size_complexity = len(self.open_list)
+        if verbose:
+            self._print_iter()
+
     def a_star(self, verbose=False, heuristic="Manhattan"):
-        self.open_list = []
+        self.open_list = [self.start_node]
         self.closed_list = {}
         self.time_complexity = 0
-        self.current_node = self.start_node
-        while self.current_node.distance > 0 and self.time_complexity < 15000:
-            self.time_complexity += 1
-            if len(self.open_list) > self.size_complexity:
-                self.size_complexity = len(self.open_list)
-            if verbose:
-                self._print_iter()
-            neighbors = [neighbor for neighbor in Node.Node.get_neighbor_to(self.current_node) if neighbor.id not in self.closed_list]
-            heapq.heapify(neighbors)
-            self.open_list = list(heapq.merge(self.open_list, neighbors))
-            self.closed_list[self.current_node.id] = self.current_node
+        while len(self.open_list) > 0:
+            self._update_compexity(verbose)
             self.current_node = heapq.heappop(self.open_list)
+            self.closed_list[self.current_node.id] = self.current_node
+            if self.current_node.distance == 0:
+                break
+            for neighbor in Node.Node.get_neighbor_to(self.current_node):
+                twin_node, twin_in_close = self._get_twin(neighbor)
+                if twin_node is None:
+                    heapq.heappush(self.open_list, neighbor)
+                elif twin_node.heuristic > neighbor.heuristic:
+                    heapq.heappush(self.open_list, neighbor)
+                    if twin_in_close:
+                        self.closed_list.pop(neighbor.id)
         print("End!")
-        self.closed_list[self.current_node.id] = self.current_node
         if self.current_node.distance > 0:
             print("No solution found")
             return
