@@ -49,7 +49,7 @@ class PathFinder:
         if verbose:
             self._print_iter()
 
-    def a_star(self, verbose=False, heuristic="Manhattan"):
+    def a_star(self, verbose=False):
         self.open_list = [self.start_node]
         self.closed_list = {}
         self.time_complexity = 0

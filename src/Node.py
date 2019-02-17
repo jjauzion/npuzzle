@@ -35,7 +35,7 @@ class Node:
         new_grid = copy.copy(node.grid)
         new_grid[new_empty_index], new_grid[node.empty] = 0, new_grid[new_empty_index]
         return Node(grid=new_grid, parent_id=node.id, parent_cost=node.cost,
-                    target_grid=node.target, empty_index=new_empty_index)
+                    target_grid=node.target, empty_index=new_empty_index, heuristic_fct=node.heuristic_fct)
 
     @staticmethod
     def get_neighbor_to(node):
@@ -58,8 +58,8 @@ class Node:
     @staticmethod
     def get_solution():
         """
-        Retturn the solution of a taquin with size = config.TAQUIN_SIZE
-        :return: solution_as_a_dictionary
+        Return the solution of a taquin with size = config.TAQUIN_SIZE
+        :return: solution_as_a_dictionary {tile_value: (x, y), ...}
         """
         solution = {}
         y = 0
@@ -95,12 +95,13 @@ class Node:
                 x -= 1
         return solution
 
-    def __init__(self, grid, parent_id=None, parent_cost=0, target_grid=None, empty_index=None):
+    def __init__(self, grid, parent_id=None, parent_cost=0, target_grid=None, empty_index=None, heuristic_fct="manhanttan"):
         self.grid = grid
         self.parent_id = parent_id
         self.cost = parent_cost + 1 if parent_id else 0
         self.distance = 0
         self.heuristic = 0
+        self.heuristic_fct = heuristic_fct
         self.id = "".join(str(elm) for elm in self.grid)
         self.empty = self.grid.index(0) if not empty_index else empty_index
         if target_grid:
@@ -115,6 +116,18 @@ class Node:
         return "{} ; h={} ; c={} ; d={} ; parent={} ; empty={}".format(
             self.grid, self.heuristic, self.cost, self.distance, self.parent_id, self.empty)
 
+    def get_manhanttan_distance(self):
+        """
+        Set the manhattan distance of the current node to the target grid
+        """
+        distance = 0
+        for index, value in enumerate(self.grid):
+            if value != 0:
+                x, y = self.index_to_xy(index)
+                distance += abs(self.target[value][0] - x)
+                distance += abs(self.target[value][1] - y)
+        return distance
+
     def set_manhanttan_distance(self):
         """
         Set the manhattan distance of the current node to the target grid
@@ -126,15 +139,25 @@ class Node:
                 self.distance += abs(self.target[value][0] - x)
                 self.distance += abs(self.target[value][1] - y)
 
-    def get_linear_conflict(self):
+    def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()
-        while not iterator.finished:
-            if iterator[0] != 0:
-                if target[int(iterator[0])][0] == int(iterator.multi_index[0]):
-                    self.distance += 2
-                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
-                    self.distance += 2
-            iterator.iternext()
+        for index, val in enumerate(self.grid):
+            x, y = Node.index_to_xy(index)
+            target_x, target_y = self.target[val]
+            if x != target_x and y != target_y or val == 0:
+                continue
+            if x == target_x:
+                for y_tmp in range(y + 1, target_y + 1):
+                    index_tmp = Node.xy_to_index(x, y_tmp)
+                    if self.grid[index_tmp] != 0 and self.target[self.grid[index_tmp]][0] == x and \
+                            self.target[self.grid[index_tmp]][1] <= target_y:
+                        self.distance += 2
+            elif y == target_y:
+                for x_tmp in range(x + 1, target_x + 1):
+                    index_tmp = Node.xy_to_index(x_tmp, y)
+                    if self.grid[index_tmp] != 0 and self.target[self.grid[index_tmp]][1] == y and \
+                            self.target[self.grid[index_tmp]][0] <= target_x:
+                        self.distance += 2
 
     def __eq__(self, other):
         return self.heuristic == other.heuristic
@@ -152,7 +175,13 @@ class Node:
         return self.heuristic <= other.heuristic
 
     def set_heuristic(self):
-        self.set_manhanttan_distance()
+        if self.heuristic_fct == "manhanttan":
+            self.set_manhanttan_distance()
+        elif self.heuristic_fct == "linear_conflict":
+            self.set_linear_conflict_distance()
+        else:
+            print("{} is not a valid heuristic.".format(self.heuristic))
+            exit(1)
         self.heuristic = self.cost + self.distance
 
     def set_target_grid(self, target):
@@ -187,6 +216,21 @@ class Node:
                     heuristic += 1
                 elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
                     heuristic += 1
+            iterator.iternext()
+        return heuristic
+                
+    def get_linear_conflict(self, target=None):
+        if not target:
+            _, target = self.taquin.get_solution()
+        heuristic = self.get_manhanttan_distance(target=target)
+        print (heuristic)
+        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
+        while not iterator.finished:
+            if iterator[0] != 0:
+                if target[int(iterator[0])][0] == int(iterator.multi_index[0]):
+                    heuristic += 2
+                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
+                    heuristic += 2
             iterator.iternext()
         return heuristic
 

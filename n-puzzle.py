@@ -6,31 +6,18 @@ from src import Node
 from src import PathFinder
 
 """
-#TEST
-start_node = Node.Node.generate_random_node()
-start_node = Node.Node(grid=[2, 4, 0, 3, 8, 1, 7, 6, 5])
-start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6])
+# TEST
+start_node = Node.Node(grid=[2, 1, 3, 8, 0, 4, 7, 6, 5], heuristic_fct="linear_conflict")
+start_node = Node.Node(grid=[2, 1, 3, 7, 0, 4, 8, 6, 5], heuristic_fct="linear_conflict")
+start_node = Node.Node(grid=[2, 1, 3, 7, 6, 4, 8, 0, 5], heuristic_fct="linear_conflict")
+start_node = Node.Node(grid=[3, 1, 2, 8, 0, 4, 7, 6, 5], heuristic_fct="linear_conflict")
+start_node = Node.Node(grid=[3, 2, 1, 8, 0, 4, 7, 6, 5], heuristic_fct="linear_conflict")
+start_node = Node.Node(grid=[1, 2, 5, 8, 0, 4, 7, 6, 3], heuristic_fct="linear_conflict")
+start_node = Node.Node(grid=[1, 2, 3, 8, 4, 5, 7, 6, 0], heuristic_fct="linear_conflict")
 solution = Node.Node.get_solution()
+print(start_node)
 start_node.set_target_grid(solution)
 print(start_node)
-print("solution : {}".format(solution))
-neighbor = Node.Node.get_neighbor_to(start_node)
-for node in neighbor:
-    print(node)
-for i in range(5):
-    new_node = Node.Node.generate_random_node()
-    new_node.set_target_grid(solution)
-    neighbor.append(new_node)
-best_node = Node.Node(grid=[1, 2, 3, 0, 8, 4, 7, 6, 5])
-best_node.set_target_grid(solution)
-neighbor.append(best_node)
-print("-----------------------------")
-for node in neighbor:
-    print(node)
-heapq.heapify(neighbor)
-print("-------AFTER HEAPIFY---------")
-for node in neighbor:
-    print(node)
 """
 
 
@@ -40,8 +27,11 @@ def run():
     start_node = Node.Node(grid=[2, 4, 0, 3, 8, 1, 7, 6, 5])
     start_node = Node.Node(grid=[1, 12, 9, 4, 0, 11, 3, 2, 14, 6, 10, 8, 7, 13, 15, 5])
     start_node = Node.Node(grid=[1, 2, 3, 4, 12, 13, 14, 5, 11, 9, 15, 6, 10, 8, 0, 7])
-    start_node = Node.Node(grid=[1, 14, 7, 6, 11, 12, 2, 8, 4, 0, 3, 5, 15, 10, 9, 13])
-    start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6])
+    start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6], heuristic_fct="manhanttan")
+    start_node = Node.Node(grid=[1, 7, 2, 4, 0, 5, 8, 3, 6], heuristic_fct="linear_conflict")
+    start_node = Node.Node(grid=[1, 14, 7, 6, 11, 12, 2, 8, 4, 0, 3, 5, 15, 10, 9, 13], heuristic_fct="linear_conflict")
+    start_node = Node.Node(grid=[1, 10, 2, 3, 0, 12, 14, 8, 9, 13, 4, 6, 11, 15, 7, 5], heuristic_fct="manhanttan")
+    start_node = Node.Node(grid=[1, 10, 2, 3, 0, 12, 14, 8, 9, 13, 4, 6, 11, 15, 7, 5], heuristic_fct="linear_conflict")
     solution = Node.Node.get_solution()
     start_node.set_target_grid(solution)
     print("Start node :")
