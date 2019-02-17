@@ -28,6 +28,12 @@ class PathFinder:
         input("press any key to continue")
 
     def _get_twin(self, node):
+        """
+        Search for the node in the closed and open list. Return the existing node if found else return None.
+        Return also boolean to indicate if the twin node is in the closed list.
+        :param node: node to look for its twin in the closed and open list
+        :return: (twin_node, twin_is_in_closed_list(=True or False))
+        """
         if node.id in self.closed_list:
             return self.closed_list[node.id], True
         else:
@@ -36,7 +42,7 @@ class PathFinder:
                     return node_open, False
         return None, False
 
-    def _update_compexity(self, verbose=False):
+    def _update_complexity(self, verbose=False):
         self.time_complexity += 1
         if len(self.open_list) > self.size_complexity:
             self.size_complexity = len(self.open_list)
@@ -48,7 +54,7 @@ class PathFinder:
         self.closed_list = {}
         self.time_complexity = 0
         while len(self.open_list) > 0:
-            self._update_compexity(verbose)
+            self._update_complexity(verbose)
             self.current_node = heapq.heappop(self.open_list)
             self.closed_list[self.current_node.id] = self.current_node
             if self.current_node.distance == 0:
@@ -81,5 +87,5 @@ class PathFinder:
         while last_node.parent_id:
             nb_move += 1
             last_node = self.closed_list[last_node.parent_id]
-            play.append(last_node)
+            play.insert(0, last_node)
         return nb_move, play
