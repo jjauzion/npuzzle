@@ -8,10 +8,6 @@ if __name__ == '__main__':
 	parser.add_argument('-E', '-Euclidian', dest='Euclidian', action='store_true')
 	args = parser.parse_args()
 
-	a = 0;
-	for x in range(4):
-		if x == True:
-			a += 1
-
 	print (args)
-	print (a)
+	print (args.Euclidian)
+	print (args.Manhatan)
