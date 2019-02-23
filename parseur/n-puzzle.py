@@ -1,23 +1,20 @@
 import fileinput
 import argparse
-#
-# parser = argparse.ArgumentParser()
-# parser.add_argument('-M', '-Manhatan', dest='Manhatan', action='store_true')
-# parser.add_argument('-H', '-Hamming_distance', dest='Hamming_distance', action='store_true')
-# parser.add_argument('-L', '-Linear_conflict', dest='Linear_conflict', action='store_true')
-# parser.add_argument('-E', '-Euclidian', dest='Euclidian', action='store_true')
-# args = parser.parse_args()
-#
-# print (args)
-# print (args.Euclidian)
-# print (args.Manhatan)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-M', '-Manhatan', dest='Manhatan', action='store_true')
+parser.add_argument('-H', '-Hamming_distance', dest='Hamming_distance', action='store_true')
+parser.add_argument('-L', '-Linear_conflict', dest='Linear_conflict', action='store_true')
+parser.add_argument('-E', '-Euclidian', dest='Euclidian', action='store_true')
+parser.add_argument("files", metavar="file", nargs="*")
+args = parser.parse_args()
 
 
 init_taquin = ()
 size = 0
 tab = ()
 
-for line in fileinput.input():
+for line in fileinput.input(args.files):
 	line2 = line.split('#')
 	print(line2, end='')
 	line2[0] = line2[0].strip()
