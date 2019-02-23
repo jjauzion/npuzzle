@@ -139,6 +139,16 @@ class Node:
                 self.distance += abs(self.target[value][0] - x)
                 self.distance += abs(self.target[value][1] - y)
 
+    def set_hamming_distance(self):
+        self.distance = 0
+        for index, value in enumerate(self.grid):
+            if value != 0:
+                x, y = self.index_to_xy(index)
+                if self.target[value][0] != x:
+                    self.distance += 1
+                elif self.target[value][1] != y:
+                    self.distance += 1
+
     def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()
         for index, val in enumerate(self.grid):
@@ -179,6 +189,10 @@ class Node:
             self.set_manhanttan_distance()
         elif self.heuristic_fct == "linear_conflict":
             self.set_linear_conflict_distance()
+        elif self.heuristic_fct == "Hamming_distance":
+            self.set_hamming_distance()
+        elif self.heuristic_fct == "Euclidian":
+            self.set_euclidian_distance()
         else:
             print("{} is not a valid heuristic.".format(self.heuristic))
             exit(1)
@@ -191,20 +205,6 @@ class Node:
         self.set_heuristic()
 
 """
-    def get_hamming_distance(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
-        heuristic = 0
-        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
-        while not iterator.finished:
-            if iterator[0] != 0:
-                if target[int(iterator[0])][0] != int(iterator.multi_index[0]):
-                    heuristic += 1
-                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
-                    heuristic += 1
-            iterator.iternext()
-        return heuristic
-
     def get_euclidian_distance(self, target=None):
         if not target:
             _, target = self.taquin.get_solution()
@@ -218,41 +218,5 @@ class Node:
                     heuristic += 1
             iterator.iternext()
         return heuristic
-                
-    def get_linear_conflict(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
-        heuristic = self.get_manhanttan_distance(target=target)
-        print (heuristic)
-        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
-        while not iterator.finished:
-            if iterator[0] != 0:
-                if target[int(iterator[0])][0] == int(iterator.multi_index[0]):
-                    heuristic += 2
-                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
-                    heuristic += 2
-            iterator.iternext()
-        return heuristic
 
 """
-
-
-    # public function get_Linear_conflict()
-    # {
-    #     $cur = $this->map;
-    #     $heuristic = 0;
-    #     foreach ($cur as $currentPos => $val) {
-    #         $wantedPos = $this->getXY($val, $this->goal);
-
-    #         $wantedX = $wantedPos['x'];
-    #         $wantedY = $wantedPos['y'];
-
-    #         $currentPos = $this->getXY($val, $this->map);
-    #         $currentX = $currentPos['x'];
-    #         $currentY = $currentPos['y'];
-    #         if ($wantedX != $currentX || $wantedY != $currentY)
-    #             $heuristic += 2;
-    #     }
-    #     $this->heuristic = intval($heuristic);
-    #     return intval($heuristic);
-    # }
