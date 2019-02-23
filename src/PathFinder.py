@@ -58,9 +58,6 @@ class PathFinder:
                 self.open_list.pop()
                 heapq.heapify(self.open_list)
                 return
-        print("ben alors?!")
-        exit(1)
-
 
     def a_star(self, verbose=False):
         self.open_list = [self.start_node]
@@ -84,6 +81,8 @@ class PathFinder:
                     self.open_list_id[neighbor.id] = neighbor
                     if twin_in_close:
                         self.closed_list.pop(neighbor.id)
+                    else:
+                        self._pop_open_queu(neighbor)
         if self.current_node.distance == 0:
             self.solution["nb_move"], self.solution["play"] = self.rewind_play(self.current_node)
 
