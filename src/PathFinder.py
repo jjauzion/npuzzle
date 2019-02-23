@@ -1,4 +1,6 @@
 import heapq
+from pathlib import Path
+import pickle
 
 from . import Node
 from . import config
@@ -68,7 +70,7 @@ class PathFinder:
                     heapq.heappush(self.open_list, neighbor)
                     if twin_in_close:
                         self.closed_list.pop(neighbor.id)
-        if self.current_node.distance > 0:
+        if self.current_node.distance == 0:
             self.solution["nb_move"], self.solution["play"] = self.rewind_play(self.current_node)
 
     def print_solution(self):
@@ -90,3 +92,8 @@ class PathFinder:
             last_node = self.closed_list[last_node.parent_id]
             play.insert(0, last_node)
         return nb_move, play
+
+    def export_solution(self, output_file):
+        with Path(output_file).open(mode='wb') as file:
+            pickle.dump(self.solution, file)
+

@@ -46,6 +46,7 @@ def run(int_lst):
     algo = PathFinder.PathFinder(start_node=start_node)
     algo.a_star()
     algo.print_solution()
+    algo.export_solution("unit_test/solution/{}.pkl".format(start_node.id))
 
 
 if __name__ == '__main__':
