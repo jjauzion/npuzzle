@@ -1,5 +1,6 @@
 import copy
 import random
+import math
 
 from . import config
 
@@ -116,22 +117,7 @@ class Node:
         return "{} ; h={} ; c={} ; d={} ; parent={} ; empty={}".format(
             self.grid, self.heuristic, self.cost, self.distance, self.parent_id, self.empty)
 
-    def get_manhanttan_distance(self):
-        """
-        Set the manhattan distance of the current node to the target grid
-        """
-        distance = 0
-        for index, value in enumerate(self.grid):
-            if value != 0:
-                x, y = self.index_to_xy(index)
-                distance += abs(self.target[value][0] - x)
-                distance += abs(self.target[value][1] - y)
-        return distance
-
     def set_manhanttan_distance(self):
-        """
-        Set the manhattan distance of the current node to the target grid
-        """
         self.distance = 0
         for index, value in enumerate(self.grid):
             if value != 0:
@@ -148,6 +134,16 @@ class Node:
                     self.distance += 1
                 elif self.target[value][1] != y:
                     self.distance += 1
+
+    def set_euclidian_distance(self):
+        self.distance = 0
+        for index, value in enumerate(self.grid):
+            if value != 0:
+                x, y = self.index_to_xy(index)
+                plot1 = [self.target[value][0], self.target[value][1]]
+                plot2 = [x, y]
+                self.distance += math.sqrt((plot1[0]-plot2[0])**2 + (plot1[1]-plot2[1])**2)
+        
 
     def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()
