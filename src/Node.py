@@ -117,6 +117,15 @@ class Node:
         return "{} ; h={} ; c={} ; d={} ; parent={} ; empty={}".format(
             self.grid, self.heuristic, self.cost, self.distance, self.parent_id, self.empty)
 
+    def __str__(self):
+        ret = ""
+        for index, nb in enumerate(self.grid):
+            if (index + 1) % config.TAQUIN_SIZE == 0:
+                ret += "{:<#2}\n".format(nb)
+            else:
+                ret += "{:<#2} ".format(nb)
+        return ret
+
     def set_manhanttan_distance(self):
         self.distance = 0
         for index, value in enumerate(self.grid):
@@ -184,9 +193,9 @@ class Node:
             self.set_manhanttan_distance()
         elif self.heuristic_fct == "linear_conflict":
             self.set_linear_conflict_distance()
-        elif self.heuristic_fct == "Hamming_distance":
+        elif self.heuristic_fct == "hamming_distance":
             self.set_hamming_distance()
-        elif self.heuristic_fct == "Euclidian":
+        elif self.heuristic_fct == "euclidian":
             self.set_euclidian_distance()
         else:
             print("{} is not a valid heuristic.".format(self.heuristic))

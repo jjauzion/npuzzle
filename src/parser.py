@@ -3,7 +3,6 @@ import fileinput
 
 
 def parser(input_file):
-    print("input : ", input_file)
     int_lst = []
     for line in fileinput.input(input_file):
         line = line.split('#')
