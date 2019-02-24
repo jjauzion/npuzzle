@@ -144,7 +144,6 @@ class Node:
                 plot2 = [x, y]
                 self.distance += math.sqrt((plot1[0]-plot2[0])**2 + (plot1[1]-plot2[1])**2)
         
-
     def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()
         for index, val in enumerate(self.grid):
