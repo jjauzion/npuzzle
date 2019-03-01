@@ -36,13 +36,13 @@ class TestParserWrongPuzzle(unittest.TestCase):
             parser.parser("unit_test/wrong_puzzle/random.txt")
         self.assertEqual(cm.exception.code, 1)
 
-    def test_all(self):
-        test_path = Path("unit_test/wrong_puzzle/")
-        for puzzle in test_path.iterdir():
-            if puzzle.suffix != ".txt":
-                continue
-            with self.assertRaises(SystemExit) as cm:
-                parser.parser(str(puzzle))
-            self.assertEqual(cm.exception.code, 1)
+    def test_complex_commentInLine(self):
+        with self.assertRaises(SystemExit) as cm:
+            parser.parser("unit_test/wrong_puzzle/complex_in_line_com.txt")
+        self.assertEqual(cm.exception.code, 1)
 
+    def test_comment_in_between(self):
+        with self.assertRaises(SystemExit) as cm:
+            parser.parser("unit_test/wrong_puzzle/comment_in_between.txt")
+        self.assertEqual(cm.exception.code, 1)
 
