@@ -51,9 +51,9 @@ class TestParserWrongPuzzle(unittest.TestCase):
             parser.parser("unit_test/wrong_puzzle/doublon.txt")
         self.assertEqual(cm.exception.code, 1)
 
-    def test_doublon2(self):
+    def test_doublon_2(self):
         with self.assertRaises(SystemExit) as cm:
-            parser.parser("unit_test/wrong_puzzle/doublon2.txt")
+            parser.parser("unit_test/wrong_puzzle/doublon_2.txt")
         self.assertEqual(cm.exception.code, 1)
 
     def test_int_max(self):
@@ -81,9 +81,9 @@ class TestParserWrongPuzzle(unittest.TestCase):
             parser.parser("unit_test/wrong_puzzle/invalid_number.txt")
         self.assertEqual(cm.exception.code, 1)
 
-    def test_negative_space(self):
+    def test_negative_number(self):
         with self.assertRaises(SystemExit) as cm:
-            parser.parser("unit_test/wrong_puzzle/negative_space.txt")
+            parser.parser("unit_test/wrong_puzzle/negative_number.txt")
         self.assertEqual(cm.exception.code, 1)
 
     def test_too_many_columns(self):
