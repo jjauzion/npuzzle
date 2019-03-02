@@ -16,6 +16,7 @@ def run(grid, heuristic_fct):
     solvable = solvability.is_solvable(start_node)
     if not solvable:
         print("Puzzle is not solvable")
+        return
     else:
         print("Puzzle is solvable")
     algo = PathFinder.PathFinder(start_node=start_node)
