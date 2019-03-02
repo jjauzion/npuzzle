@@ -4,14 +4,20 @@ from timeit import Timer
 from src import Node
 from src import PathFinder
 from src import parser
+from src import solvability
 
 
-def run(int_lst, heuristic_fct):
-    start_node = Node.Node(grid=int_lst, heuristic_fct=heuristic_fct)
+def run(grid, heuristic_fct):
+    start_node = Node.Node(grid=grid, heuristic_fct=heuristic_fct)
     solution = Node.Node.get_solution()
     start_node.set_target_grid(solution)
     print("Start node :")
     print(start_node)
+    solvable = solvability.is_solvable(start_node)
+    if not solvable:
+        print("Puzzle is not solvable")
+    else:
+        print("Puzzle is solvable")
     algo = PathFinder.PathFinder(start_node=start_node)
     algo.a_star()
     algo.print_solution()
