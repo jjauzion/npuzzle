@@ -60,7 +60,7 @@ class Node:
     def get_solution():
         """
         Return the solution of a taquin with size = config.TAQUIN_SIZE
-        :return: solution_as_a_dictionary {tile_value: (x, y), ...}
+        :return: solution_as_a_dictionary {tile_value: (x, y), ...} eg: {1: (0, 0), 2: (0, 1), ...}
         """
         solution = {}
         y = 0
