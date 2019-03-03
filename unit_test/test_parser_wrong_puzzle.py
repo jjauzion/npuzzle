@@ -6,10 +6,6 @@ from src import error
 
 class TestParserWrongPuzzle(unittest.TestCase):
 
-    def test_invalid_number(self):
-        with self.assertRaises(error.ParsingError):
-            parser.parser("unit_test/wrong_puzzle/invalid_number.txt")
-
     def test_nothing(self):
         with self.assertRaises(error.ParsingError):
             parser.parser("unit_test/wrong_puzzle/nothing.txt")
@@ -101,3 +97,19 @@ class TestParserWrongPuzzle(unittest.TestCase):
     def test_wrong_size_3(self):
         with self.assertRaises(error.ParsingError):
             parser.parser("unit_test/wrong_puzzle/wrong_size_3.txt")
+
+    def test_1x1(self):
+        with self.assertRaises(error.ParsingError):
+            parser.parser("unit_test/wrong_puzzle/1x1.txt")
+
+    def test_no_zero(self):
+        with self.assertRaises(error.ParsingError):
+            parser.parser("unit_test/wrong_puzzle/no_zero.txt")
+
+    def test_only_zero(self):
+        with self.assertRaises(error.ParsingError):
+            parser.parser("unit_test/wrong_puzzle/only_zero.txt")
+
+    def test_2_zero(self):
+        with self.assertRaises(error.ParsingError):
+            parser.parser("unit_test/wrong_puzzle/2_zero.txt")

@@ -75,6 +75,8 @@ class Node:
         Return the solution of a taquin with size = config.TAQUIN_SIZE
         :return: solution_as_a_dictionary {tile_value: (x, y), ...} eg: {1: (0, 0), 2: (0, 1), ...}
         """
+        if config.TAQUIN_SIZE == 1:
+            return {0 : (0, 0)}
         solution = {}
         y = 0
         ymin = 0
@@ -220,20 +222,3 @@ class Node:
             raise TypeError("Target grid shall be given as a dictionary")
         self.target = target
         self.set_heuristic()
-
-"""
-    def get_euclidian_distance(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
-        heuristic = 0
-        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
-        while not iterator.finished:
-            if iterator[0] != 0:
-                if target[int(iterator[0])][0] != int(iterator.multi_index[0]):
-                    heuristic += 1
-                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
-                    heuristic += 1
-            iterator.iternext()
-        return heuristic
-
-"""
