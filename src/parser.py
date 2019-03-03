@@ -7,24 +7,21 @@ from src import config
 def parse_file(file):
     int_lst = []
     for line in file:
-        line = line.split('#')
+        line = line.split("#")
         line[0] = line[0].strip()
         if line[0].isdigit() and config.TAQUIN_SIZE == 0 and len(line[0]):
             config.TAQUIN_SIZE = int(line[0])
             if config.TAQUIN_SIZE == 1:
                 raise error.ParsingError("Taquin de taille 1 n'est pas valide")
         else:
-            tab = line[0].split(' ')
-            x = 0
-            while x in range(len(tab)): #problemme avec for in range et .pop
-                if not tab[x]:
-                    tab.pop(x)
-                elif not tab[x].isdigit():
+            tab = [elm for elm in line[0].split(" ") if elm != ""]
+            if len(tab) == 0:
+                continue
+            for x in tab:
+                if not x.isdigit():
                     raise error.ParsingError("'{}' is not a number".format(tab[x]))
-                elif int(tab[x]) > int(config.TAQUIN_SIZE)**2 - 1:
+                elif int(x) > int(config.TAQUIN_SIZE)**2 - 1:
                     raise error.ParsingError("'{}' > number max".format(tab[x]))
-                else:
-                    x += 1
             int_lst += [int(x) for x in tab]
             if len(tab) != int(config.TAQUIN_SIZE):
                 raise error.ParsingError("Longueur de ligne (={}) differente de la taille du jeu (={})\nline = '{}'\nfile = '{}'"
