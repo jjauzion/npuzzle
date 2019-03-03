@@ -26,8 +26,8 @@ def parse_file(file):
             int_lst += [int(x) for x in tab]
             tab = set(tab)
             if len(tab) != int(config.TAQUIN_SIZE):
-                raise error.ParsingError("Ne correspond pas a la taille du jeu ou doublon: {}={}"
-                                         .format(len(tab), config.TAQUIN_SIZE))
+                raise error.ParsingError("Ne correspond pas a la taille du jeu ou doublon: {}={}\nline = '{}'\nfile = '{}'"
+                                         .format(len(tab), config.TAQUIN_SIZE, line, file.filename()))
         pass
     if len(int_lst) == 0:
         raise error.ParsingError("File is empty")
@@ -35,11 +35,12 @@ def parse_file(file):
 
 
 def parser(input_file):
-    with fileinput.input(input_file, openhook=fileinput.hook_encoded("utf-8")) as file:
-        try:
+    config.TAQUIN_SIZE = 0
+    try:
+        with fileinput.input(input_file, openhook=fileinput.hook_encoded("utf-8")) as file:
             int_lst = parse_file(file)
-        except UnicodeDecodeError:
-            raise error.ParsingError("File contains non utf-8 characters..")
+    except UnicodeDecodeError:
+        raise error.ParsingError("File contains non utf-8 characters..")
         #except Exception as err:
         #    raise error.ParsingError("Unknown parsing error ({})".format(err))
         #except BaseException as err:
