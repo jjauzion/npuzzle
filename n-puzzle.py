@@ -5,6 +5,7 @@ from src import Node
 from src import PathFinder
 from src import parser
 from src import solvability
+from src import error
 
 
 def run(grid, heuristic_fct):
@@ -45,7 +46,11 @@ if __name__ == '__main__':
     arg_parser.add_argument('-t', '--timer', action='store_true', help="print total execution time")
     arg_parser.add_argument("files", metavar="file", nargs="*", help="input file with a puzzle")
     args = arg_parser.parse_args()
-    puzzle = parser.parser(args.files)
+    try:
+        puzzle = parser.parser(args.files)
+    except error.ParsingError as err:
+        print("Parsing Error : {}".format(err.message))
+        exit(1)
     if args.timer:
         t = Timer(lambda: run(puzzle, heuristic_fct(args)))
         print("exe time : {}".format(t.timeit(number=1)))
