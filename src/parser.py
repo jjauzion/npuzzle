@@ -19,9 +19,9 @@ def parse_file(file):
                 continue
             for x in tab:
                 if not x.isdigit():
-                    raise error.ParsingError("'{}' is not a number".format(tab[x]))
+                    raise error.ParsingError("'{}' is not a number".format(x))
                 elif int(x) > int(config.TAQUIN_SIZE)**2 - 1:
-                    raise error.ParsingError("'{}' > number max".format(tab[x]))
+                    raise error.ParsingError("'{}' > number max".format(x))
             int_lst += [int(x) for x in tab]
             if len(tab) != int(config.TAQUIN_SIZE):
                 raise error.ParsingError("Longueur de ligne (={}) differente de la taille du jeu (={})\nline = '{}'\nfile = '{}'"

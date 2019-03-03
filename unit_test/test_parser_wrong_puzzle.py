@@ -74,6 +74,10 @@ class TestParserWrongPuzzle(unittest.TestCase):
         with self.assertRaises(error.ParsingError):
             parser.parser("unit_test/wrong_puzzle/too_many_lines.txt")
 
+    def test_too_many_lines_2(self):
+        with self.assertRaises(error.ParsingError):
+            parser.parser("unit_test/wrong_puzzle/too_many_lines_2.txt")
+
     def test_wrong_1st_line(self):
         with self.assertRaises(error.ParsingError):
             parser.parser("unit_test/wrong_puzzle/wrong_1st_line.txt")
