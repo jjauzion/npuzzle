@@ -27,7 +27,7 @@ def parse_file(file):
                 raise error.ParsingError("Longueur de ligne (={}) differente de la taille du jeu (={})\nline = '{}'\nfile = '{}'"
                                          .format(len(tab), config.TAQUIN_SIZE, line, file.filename()))
     if len(int_lst) == 0:
-        raise error.ParsingError("File is empty")
+        raise error.ParsingError("Le fichier ne contient pas de grille...")
     if len(set(int_lst)) != len(int_lst):
         raise error.ParsingError("La grille contient des doublons")
     return int_lst
