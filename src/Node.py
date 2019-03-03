@@ -57,10 +57,23 @@ class Node:
         return Node(grid=random.sample(range(config.TAQUIN_SIZE ** 2), config.TAQUIN_SIZE ** 2))
 
     @staticmethod
+    def dico2grid(dico):
+        """
+        transform a taquin given as a dictionary to a grid as a list
+        :param dico: dico to transform into a grid
+        :return: grid as a List object
+        """
+        grid = list(range(len(dico)))
+        for val in dico:
+            index = Node.xy_to_index(dico[val][0], dico[val][1])
+            grid[index] = val
+        return grid
+
+    @staticmethod
     def get_solution():
         """
         Return the solution of a taquin with size = config.TAQUIN_SIZE
-        :return: solution_as_a_dictionary {tile_value: (x, y), ...}
+        :return: solution_as_a_dictionary {tile_value: (x, y), ...} eg: {1: (0, 0), 2: (0, 1), ...}
         """
         solution = {}
         y = 0
