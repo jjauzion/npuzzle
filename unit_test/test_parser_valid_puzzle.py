@@ -30,3 +30,9 @@ class TestParserWrongPuzzle(unittest.TestCase):
         self.assertEqual(get, valid_grid)
         self.assertEqual(config.TAQUIN_SIZE, 3)
 
+    def test_multiple_comment(self):
+        valid_grid = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]
+        get = parser.parser("unit_test/valid_puzzle/multiple_comment.txt")
+        self.assertEqual(get, valid_grid)
+        self.assertEqual(config.TAQUIN_SIZE, 4)
+

@@ -26,13 +26,13 @@ def parse_file(file):
                 else:
                     x += 1
             int_lst += [int(x) for x in tab]
-            tab = set(tab)
             if len(tab) != int(config.TAQUIN_SIZE):
-                raise error.ParsingError("Ne correspond pas a la taille du jeu ou doublon: {}={}\nline = '{}'\nfile = '{}'"
+                raise error.ParsingError("Longueur de ligne (={}) differente de la taille du jeu (={})\nline = '{}'\nfile = '{}'"
                                          .format(len(tab), config.TAQUIN_SIZE, line, file.filename()))
-        pass
     if len(int_lst) == 0:
         raise error.ParsingError("File is empty")
+    if len(set(int_lst)) != len(int_lst):
+        raise error.ParsingError("La grille contient des doublons")
     return int_lst
 
 
