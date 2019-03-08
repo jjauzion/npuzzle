@@ -16,7 +16,7 @@ def run(grid, heuristic_fct):
     print(start_node)
     solvable = solvability.is_solvable(start_node)
     if not solvable:
-        print("Puzzle is not solvable")
+        print("Puzzle is unsolvable")
         return
     else:
         print("Puzzle is solvable")

@@ -7,8 +7,10 @@ from src import config
 def parse_file(file):
     int_lst = []
     for line in file:
+        print (line)
         line = line.split("#")
         line[0] = line[0].strip()
+        print (line[0])
         if line[0].isdigit() and config.TAQUIN_SIZE == 0 and len(line[0]):
             config.TAQUIN_SIZE = int(line[0])
             if config.TAQUIN_SIZE == 1:
@@ -18,6 +20,7 @@ def parse_file(file):
             if len(tab) == 0:
                 continue
             for x in tab:
+                x = x.strip()
                 if not x.isdigit():
                     raise error.ParsingError("'{}' is not a number".format(x))
                 elif int(x) > int(config.TAQUIN_SIZE)**2 - 1:
