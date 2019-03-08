@@ -10,7 +10,6 @@ def parse_file(file):
         print (line)
         line = line.split("#")
         line[0] = line[0].strip()
-        print (line[0])
         if line[0].isdigit() and config.TAQUIN_SIZE == 0 and len(line[0]):
             config.TAQUIN_SIZE = int(line[0])
             if config.TAQUIN_SIZE == 1:
