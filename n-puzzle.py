@@ -26,6 +26,8 @@ def run(grid, heuristic_fct, verbose):
 
 
 def heuristic_fct(args):
+    if args.uniform_cost:
+        Node.Node.distance_between_node = 0
     if args.Linear_conflict:
         return "linear_conflict"
     elif args.Euclidian:
@@ -48,7 +50,7 @@ if __name__ == '__main__':
     group.add_argument('-L', '--Linear_conflict', action='store_true')
     group.add_argument('-E', '--Euclidian', action='store_true')
     group.add_argument('-G', '--greedy_search', action='store_true')
-    group.add_argument('-U', '--uniform_cost', action='store_true')
+    arg_parser.add_argument('-U', '--uniform_cost', action='store_true')
     arg_parser.add_argument('-t', '--timer', action='store_true', help="print total execution time")
     arg_parser.add_argument('-v', '--verbose', action='store_true')
     arg_parser.add_argument("files", metavar="file", nargs="*", help="input file with a puzzle")

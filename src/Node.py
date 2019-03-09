@@ -76,7 +76,7 @@ class Node:
         :return: solution_as_a_dictionary {tile_value: (x, y), ...} eg: {1: (0, 0), 2: (0, 1), ...}
         """
         if config.TAQUIN_SIZE == 1:
-            return {0 : (0, 0)}
+            return {0: (0, 0)}
         solution = {}
         y = 0
         ymin = 0
@@ -111,10 +111,16 @@ class Node:
                 x -= 1
         return solution
 
+    @staticmethod
+    def compare_node_grid(node1, node2):
+        return node1.grid == node2.grid
+
+    distance_between_node = 1
+
     def __init__(self, grid, parent_id=None, parent_cost=0, target_grid=None, empty_index=None, heuristic_fct="manhanttan"):
         self.grid = grid
         self.parent_id = parent_id
-        self.cost = parent_cost + 1 if parent_id else 0
+        self.cost = parent_cost + Node.distance_between_node if parent_id else 0
         self.distance = 0
         self.heuristic = 0
         self.heuristic_fct = heuristic_fct
@@ -170,10 +176,10 @@ class Node:
                 self.distance += math.sqrt((plot1[0]-plot2[0])**2 + (plot1[1]-plot2[1])**2)
 
     def set_greedy_search(self):
-        self.distance = 99
+        self.distance = 0
 
     def set_uniform_cost(self):
-        self.distance = 1
+        self.distance = 99
 
     def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()

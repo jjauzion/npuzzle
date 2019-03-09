@@ -7,7 +7,6 @@ from src import config
 def parse_file(file):
     int_lst = []
     for line in file:
-        print (line)
         line = line.split("#")
         line[0] = line[0].strip()
         if line[0].isdigit() and config.TAQUIN_SIZE == 0 and len(line[0]):
@@ -42,8 +41,10 @@ def parser(input_file):
             int_lst = parse_file(file)
     except UnicodeDecodeError:
         raise error.ParsingError("File contains non utf-8 characters..")
-        #except Exception as err:
-        #    raise error.ParsingError("Unknown parsing error ({})".format(err))
-        #except BaseException as err:
-        #    raise error.ParsingError("Program interrupted by system ({})".format(err))
+    except IsADirectoryError:
+        raise error.ParsingError("Is a directory")
+    except Exception as err:
+        raise error.ParsingError("Unknown parsing error ({})".format(err))
+    #except BaseException as err:
+    #    raise error.ParsingError("Program interrupted by system ({})".format(err))
     return int_lst
