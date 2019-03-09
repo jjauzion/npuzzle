@@ -27,9 +27,11 @@ class PathFinder:
         print("----------------------------------")
         print("time complexity = {}".format(self.time_complexity))
         print("size complexity = {}".format(self.size_complexity))
-        print("opened : [{}]".format(self.open_list))
-        print("closed : [{}]".format(self.closed_list))
+        #print("opened : [{}]".format(self.open_list))
+        #print("closed : [{}]".format(self.closed_list))
         print("self.current_node :\n{}".format(self.current_node))
+        if self.current_node:
+            print(self.current_node.distance)
 
     def _get_twin(self, node):
         """
