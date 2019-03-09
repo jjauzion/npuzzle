@@ -1,45 +1,9 @@
 import argparse
 
 from timeit import Timer
-from src import Node
-from src import PathFinder
 from src import parser
-from src import solvability
 from src import error
-
-
-def run(grid, heuristic_fct, verbose):
-    start_node = Node.Node(grid=grid, heuristic_fct=heuristic_fct)
-    solution = Node.Node.get_solution()
-    start_node.set_target_grid(solution)
-    print("Start node :")
-    print(start_node)
-    solvable = solvability.is_solvable(start_node)
-    if not solvable:
-        print("Puzzle is unsolvable")
-        return
-    else:
-        print("Puzzle is solvable")
-    algo = PathFinder.PathFinder(start_node=start_node)
-    algo.a_star(verbose)
-    algo.print_solution()
-
-
-def heuristic_fct(args):
-    if args.uniform_cost:
-        Node.Node.distance_between_node = 0
-    if args.Linear_conflict:
-        return "linear_conflict"
-    elif args.Euclidian:
-        return "euclidian"
-    elif args.Hamming_distance:
-        return "hamming_distance"
-    elif args.greedy_search:
-        return "greedy_search"
-    elif args.uniform_cost:
-        return "uniform_cost"
-    else:
-        return "manhanttan"
+from src import run
 
 
 if __name__ == '__main__':
@@ -61,7 +25,7 @@ if __name__ == '__main__':
         print("Parsing Error : {}".format(err.message))
         exit(1)
     if args.timer:
-        t = Timer(lambda: run(puzzle, heuristic_fct(args), args.verbose))
+        t = Timer(lambda: run.run(puzzle, args, args.verbose))
         print("exe time : {}".format(t.timeit(number=1)))
     else:
-        run(puzzle, heuristic_fct(args), args.verbose)
+        run.run(puzzle, args, args.verbose)
