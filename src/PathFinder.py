@@ -3,7 +3,7 @@ from pathlib import Path
 import pickle
 
 from . import Node
-from . import config
+from . import lib
 
 
 class PathFinder:
@@ -53,13 +53,15 @@ class PathFinder:
         if verbose and self.time_complexity % verbose == 0:
             self._print_iter()
 
-    def _pop_open_queu(self, node):
-        for index, open_node in enumerate(self.open_list):
-            if open_node.id == node.id:
-                self.open_list[index] = self.open_list[-1]
-                self.open_list.pop()
-                heapq.heapify(self.open_list)
-                return
+    def replace_in_open_list(self, node):
+        node_index = None
+        for index, elm in enumerate(self.open_list):
+            if elm.id == node.id:
+                node_index = index
+                break
+        if node_index is None:
+            raise ValueError("Problem my friend... :/")
+        lib.bubble_up(self.open_list, node_index)
 
     def a_star(self, verbose=False):
         self.open_list = [self.start_node]
@@ -81,12 +83,12 @@ class PathFinder:
                     heapq.heappush(self.open_list, neighbor)
                     self.open_list_id[neighbor.id] = neighbor
                 elif twin_node.heuristic > neighbor.heuristic:
-                    heapq.heappush(self.open_list, neighbor)
-                    self.open_list_id[neighbor.id] = neighbor
                     if twin_in_close:
+                        heapq.heappush(self.open_list, neighbor)
+                        self.open_list_id[neighbor.id] = neighbor
                         self.closed_list.pop(neighbor.id)
                     else:
-                        self._pop_open_queu(neighbor)
+                        self.replace_in_open_list(neighbor)
         print("final node:\n{}".format(self.current_node))
         print("solution grid:\n{}".format(solution_grid))
         if self.current_node.grid == solution_grid:
