@@ -75,6 +75,8 @@ class Node:
         Return the solution of a taquin with size = config.TAQUIN_SIZE
         :return: solution_as_a_dictionary {tile_value: (x, y), ...} eg: {1: (0, 0), 2: (0, 1), ...}
         """
+        if config.TAQUIN_SIZE == 1:
+            return {0 : (0, 0)}
         solution = {}
         y = 0
         ymin = 0
@@ -157,6 +159,7 @@ class Node:
                 elif self.target[value][1] != y:
                     self.distance += 1
 
+
     def set_euclidian_distance(self):
         self.distance = 0
         for index, value in enumerate(self.grid):
@@ -165,7 +168,13 @@ class Node:
                 plot1 = [self.target[value][0], self.target[value][1]]
                 plot2 = [x, y]
                 self.distance += math.sqrt((plot1[0]-plot2[0])**2 + (plot1[1]-plot2[1])**2)
-        
+
+    def set_greedy_search(self):
+        self.distance = 99
+
+    def set_uniform_cost(self):
+        self.distance = 1
+
     def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()
         for index, val in enumerate(self.grid):
@@ -210,6 +219,10 @@ class Node:
             self.set_hamming_distance()
         elif self.heuristic_fct == "euclidian":
             self.set_euclidian_distance()
+        elif self.heuristic_fct == "greedy_search":
+            self.set_greedy_search()
+        elif self.heuristic_fct == "uniform_cost":
+            self.set_uniform_cost()
         else:
             print("{} is not a valid heuristic.".format(self.heuristic))
             exit(1)
@@ -220,20 +233,3 @@ class Node:
             raise TypeError("Target grid shall be given as a dictionary")
         self.target = target
         self.set_heuristic()
-
-"""
-    def get_euclidian_distance(self, target=None):
-        if not target:
-            _, target = self.taquin.get_solution()
-        heuristic = 0
-        iterator = np.nditer(self.taquin.grid, flags=['multi_index'])
-        while not iterator.finished:
-            if iterator[0] != 0:
-                if target[int(iterator[0])][0] != int(iterator.multi_index[0]):
-                    heuristic += 1
-                elif target[int(iterator[0])][1] != int(iterator.multi_index[1]):
-                    heuristic += 1
-            iterator.iternext()
-        return heuristic
-
-"""
