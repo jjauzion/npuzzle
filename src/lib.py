@@ -12,3 +12,15 @@ def bubble_up(heap, elm_index):
             continue
         break
     heap[elm_index] = newitem
+
+
+def is_heap(heap, n, i=0):
+    is_leaf = i > int((n - 2) / 2)
+    if is_leaf:
+        return True
+    if heap[i] > heap[i * 2 + 1] or heap[i] > heap[i * 2 + 2]:
+        return False
+    if is_heap(heap, n, i * 2 + 1) and is_heap(heap, n, i * 2 + 2):
+        return True
+    else:
+        return False

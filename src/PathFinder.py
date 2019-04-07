@@ -72,6 +72,8 @@ class PathFinder:
         solution_grid = Node.Node.dico2grid(self.start_node.target)
         solved = False
         while len(self.open_list) > 0 and not solved:
+            if not lib.is_heap(self.open_list, len(self.open_list)):
+                raise ValueError("heap is bad...")
             self._update_complexity(verbose)
             self.current_node = heapq.heappop(self.open_list)
             self.open_list_id.pop(self.current_node.id)
