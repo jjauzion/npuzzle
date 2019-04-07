@@ -64,6 +64,7 @@ class PathFinder:
         lib.bubble_up(self.open_list, node_index)
 
     def a_star(self, verbose=False):
+        """ NEW """
         self.open_list = [self.start_node]
         self.open_list_id = {self.start_node.id: self.start_node}
         self.closed_list = {}
@@ -92,6 +93,44 @@ class PathFinder:
         print("final node:\n{}".format(self.current_node))
         print("solution grid:\n{}".format(solution_grid))
         if self.current_node.grid == solution_grid:
+            self.solution["nb_move"], self.solution["play"] = self.rewind_play(self.current_node)
+
+    def _pop_open_queu(self, node):
+        for index, open_node in enumerate(self.open_list):
+            if open_node.id == node.id:
+                self.open_list[index] = self.open_list[-1]
+                self.open_list.pop()
+                heapq.heapify(self.open_list)
+                return
+
+    def a_star_old(self, verbose=False):
+        """ OLD """
+        self.open_list = [self.start_node]
+        self.open_list_id = {self.start_node.id: self.start_node}
+        self.closed_list = {}
+        self.time_complexity = 0
+        solution_grid = Node.Node.dico2grid(self.start_node.target)
+        solved = False
+        while len(self.open_list) > 0 and not solved:
+            self._update_complexity(verbose)
+            self.current_node = heapq.heappop(self.open_list)
+            self.open_list_id.pop(self.current_node.id)
+            self.closed_list[self.current_node.id] = self.current_node
+            if self.current_node.distance == 0 and self.current_node.grid == solution_grid:
+                solved = True
+            for neighbor in Node.Node.get_neighbor_to(self.current_node):
+                twin_node, twin_in_close = self._get_twin(neighbor)
+                if twin_node is None:
+                    heapq.heappush(self.open_list, neighbor)
+                    self.open_list_id[neighbor.id] = neighbor
+                elif twin_node.heuristic > neighbor.heuristic:
+                    heapq.heappush(self.open_list, neighbor)
+                    self.open_list_id[neighbor.id] = neighbor
+                    if twin_in_close:
+                        self.closed_list.pop(neighbor.id)
+                    else:
+                        self._pop_open_queu(neighbor)
+        if self.current_node.distance == 0:
             self.solution["nb_move"], self.solution["play"] = self.rewind_play(self.current_node)
 
     def print_solution(self):

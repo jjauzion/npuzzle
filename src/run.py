@@ -39,5 +39,8 @@ def run(grid, args=None, heuristic=None, verbose=False):
     else:
         print("Puzzle is solvable")
     algo = PathFinder.PathFinder(start_node=start_node)
-    algo.a_star(verbose)
+    if args.old:
+        algo.a_star_old(verbose)
+    else:
+        algo.a_star(verbose)
     algo.print_solution()
