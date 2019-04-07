@@ -54,6 +54,8 @@ class PathFinder:
             self._print_iter()
 
     def replace_in_open_list(self, node):
+        heap_log = [elm.id for elm in self.open_list]
+        self.log.append(heap_log)
         node_index = None
         for index, elm in enumerate(self.open_list):
             if elm.id == node.id:
@@ -62,6 +64,9 @@ class PathFinder:
         if node_index is None:
             raise ValueError("Problem my friend... :/")
         lib.bubble_up(self.open_list, node_index)
+        heap_log = [elm.id for elm in self.open_list]
+        self.log.append(heap_log)
+        self.log.append("------------------")
 
     def a_star(self, verbose=False):
         """ NEW """
@@ -71,6 +76,7 @@ class PathFinder:
         self.time_complexity = 0
         solution_grid = Node.Node.dico2grid(self.start_node.target)
         solved = False
+        self.log = []
         while len(self.open_list) > 0 and not solved:
             if not lib.is_heap(self.open_list, len(self.open_list)):
                 raise ValueError("heap is bad...")
@@ -96,13 +102,21 @@ class PathFinder:
         print("solution grid:\n{}".format(solution_grid))
         if self.current_node.grid == solution_grid:
             self.solution["nb_move"], self.solution["play"] = self.rewind_play(self.current_node)
+        with Path("log_new.txt").open(mode='w', encoding='utf-8') as file:
+            for line in self.log:
+                file.write("{}\n".format(line))
 
     def _pop_open_queu(self, node):
+        heap_log = [elm.id for elm in self.open_list]
+        self.log.append(heap_log)
         for index, open_node in enumerate(self.open_list):
             if open_node.id == node.id:
                 self.open_list[index] = self.open_list[-1]
                 self.open_list.pop()
                 heapq.heapify(self.open_list)
+                heap_log = [elm.id for elm in self.open_list]
+                self.log.append(heap_log)
+                self.log.append("------------------")
                 return
 
     def a_star_old(self, verbose=False):
@@ -113,7 +127,10 @@ class PathFinder:
         self.time_complexity = 0
         solution_grid = Node.Node.dico2grid(self.start_node.target)
         solved = False
+        self.log = []
         while len(self.open_list) > 0 and not solved:
+            if not lib.is_heap(self.open_list, len(self.open_list)):
+                raise ValueError("heap is bad...")
             self._update_complexity(verbose)
             self.current_node = heapq.heappop(self.open_list)
             self.open_list_id.pop(self.current_node.id)
@@ -134,6 +151,9 @@ class PathFinder:
                         self._pop_open_queu(neighbor)
         if self.current_node.distance == 0:
             self.solution["nb_move"], self.solution["play"] = self.rewind_play(self.current_node)
+        with Path("log_old.txt").open(mode='w', encoding='utf-8') as file:
+            for line in self.log:
+                file.write("{}\n".format(line))
 
     def print_solution(self):
         print("---------- SOLUTION ----------")
