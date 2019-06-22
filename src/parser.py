@@ -43,8 +43,4 @@ def parser(input_file):
         raise error.ParsingError("File contains non utf-8 characters..")
     except IsADirectoryError:
         raise error.ParsingError("Is a directory")
-    except Exception as err:
-        raise error.ParsingError("Unknown parsing error ({})".format(err))
-    #except BaseException as err:
-    #    raise error.ParsingError("Program interrupted by system ({})".format(err))
     return int_lst
