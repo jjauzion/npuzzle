@@ -88,3 +88,102 @@ conda install numpy
 
 
 source activate npuzzle
+
+
+
+Prevoir:
+Ensemble ouvert
+Les étudiants ont mis en œuvre leur ensemble "ouvert" avec une structure de données pertinente.
+- Une file d'attente prioritaire (c'est-à-dire une file d'attente contenant d'abord les éléments à haute priorité, ici "priorité élevée" signifie "à faible coût"), ou un autre conteneur permettant de récupérer immédiatement l'élément le moins coûteux, vaut 5
+- Une carte / dict / hash de (coût) -> (liste de nœuds) vaut 3
+- Un autre conteneur avec une sorte de mécanisme permettant de trouver facilement l'élément de priorité la plus élevée vaut 2
+- Tout autre conteneur, tel que liste / vecteur / etc ... vaut 0
+
+Ensemble fermé
+Les étudiants ont mis en œuvre leur ensemble "fermé" avec une structure de données appropriée.
+- Un conteneur qui permet facilement de vérifier si un nœud est actuellement dans l'ensemble ou non vaut 5 (table de hash, on met le truc dans la clef direct)
+- Tout autre conteneur, tel que liste / vecteur / etc ... vaut 0
+
+Recherche gourmande
+-Les étudiants ont implémenté une option permettant de faire une recherche gourmande et sont capables de l'expliquer. (truc qui pars en cercle pour avoir tout les resultats) disjka
+-Les étudiants ont implémenté une option permettant de faire une recherche à coût uniforme et sont en mesure de l'expliquer. (trucs qui pars direct au resultat) best first search
+
+https://qiao.github.io/PathFinding.js/visual/
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Début = noeud initial;
+Objectif = noeud final;
+open_list .insert ( Début );   // liste de type node
+liste_fermée = ensemble vide;    // liste de type node
+Commencez .g = 0; Démarrer .h = heuristique ( Démarrer ); Démarrer .f = Démarrer .g + Démarrer .h;
+fonction A * () // fonction pilote
+{
+
+while (! open_list .empty ()) // exécuté jusqu'à ce que la liste ouverte soit vide
+{
+
+process = open_list (noeud avec min (f));
+if ( processus == objectif )
+return (chemin de la fonction ( processus )); // chemin vers l'objectif trouvé
+open_list .remove ( processus );
+liste_finie .insert ( processus );
+foreach ( noeud dans nextnodes ( process )) // exécuté pour tous les noeuds possibles à partir du courant
+{
+
+if ( liste_ fermée .count ( noeud )! = 0) // N'existe pas dans la liste fermée
+sauter cette boucle une fois;
+if ( open_list .count ( node ) == 0) // N'existe pas dans la liste ouverte
+open_list .insert ( noeud )
+autre
+{
+
+actual_node = open_list .find ( node ); // s'il existe, trouve un noeud dans open_list
+if ( noeud .g < noeud_généal .g) // meilleur score g pour le même noeud que celui trouvé
+{
+
+actual_node .g = noeud .g;
+nom_actuel .f = noeud .f;
+actual_node .parent = node .parent; // change le parent en meilleur (parent précédent)
+
+}
+
+}
+
+}
+
+}
+imprimer (“Impossible d'atteindre l'objectif”);
+
+}
+fonction nextnodes ( noeud )
+{
+retourne la liste de tous les nœuds suivants possibles à partir du nœud ;
+}
+chemin de la fonction ( noeud )
+{
+Construisez le chemin à partir de noeud pour commencer à utiliser noeud . parent;
+} 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+https://conda.io/en/latest/miniconda.html
+export PATH="/Users/jaustry/sgoinfre/miniconda3/bin:$PATH"
+source ~/.zshrc
+conda
+conda env
+conda create --name npuzzle python=3.7
+source activate npuzzle
+conda install numpy
+
+
+source activate npuzzle
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+python2.7 npuzzle-gen.py 4 | py n-puzzle.py
+py -m  unittest discover
+
