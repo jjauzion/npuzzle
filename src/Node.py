@@ -175,11 +175,8 @@ class Node:
                 plot2 = [x, y]
                 self.distance += math.sqrt((plot1[0]-plot2[0])**2 + (plot1[1]-plot2[1])**2)
 
-    def set_greedy_search(self):
-        self.distance = 0
-
     def set_uniform_cost(self):
-        self.distance = 99
+        self.distance = 0
 
     def set_linear_conflict_distance(self):
         self.set_manhanttan_distance()

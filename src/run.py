@@ -4,7 +4,7 @@ from src import Node
 
 
 def get_heuristic_fct_name(args):
-    if args.uniform_cost:
+    if args.greedy_search:
         Node.Node.distance_between_node = 0
     if args.Linear_conflict:
         return "linear_conflict"
@@ -12,8 +12,6 @@ def get_heuristic_fct_name(args):
         return "euclidian"
     elif args.Hamming_distance:
         return "hamming_distance"
-    elif args.greedy_search:
-        return "greedy_search"
     elif args.uniform_cost:
         return "uniform_cost"
     else:
